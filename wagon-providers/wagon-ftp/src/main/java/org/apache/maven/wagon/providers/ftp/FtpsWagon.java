@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
+import org.apache.maven.wagon.ConnectionException;
+import org.apache.maven.wagon.authentication.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +45,10 @@ public class FtpsWagon
      * @plexus.configuration default-value="TLS"
      */
     private String securityProtocol = "TLS";
-
+    
+    private int parmPBSZ = 0;
+    private String dataConnMode = "P";
+    
     /**
      * @plexus.configuration default-value="false"
      */
@@ -68,4 +73,19 @@ public class FtpsWagon
 		}
         return client;
     }
+    
+
+	@Override
+	protected void openConnectionInternal() throws ConnectionException, AuthenticationException {
+		super.openConnectionInternal();
+		
+		try {
+			LOG.debug("Try to switch to secure data connection.");
+			((FTPSClient) ftp).execPBSZ(parmPBSZ);
+			((FTPSClient) ftp).execPROT(dataConnMode);
+		} catch (IOException e) {
+			LOG.info("Unable to change to protected data connection, continue with clear data connections.");
+		}
+		LOG.debug("Secure DataConnection established.");
+	}
 }

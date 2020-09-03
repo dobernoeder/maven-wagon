@@ -61,7 +61,7 @@ import java.util.List;
 public class FtpWagon
     extends StreamWagon
 {
-    private FTPClient ftp;
+    protected FTPClient ftp;
 
     /**
      * @plexus.configuration default-value="true"
