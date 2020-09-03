@@ -59,6 +59,7 @@ public class FtpsWagon
                 securityProtocol, implicit, endpointChecking );
         FTPSClient client = new FTPSClient( securityProtocol, implicit );
         client.setEndpointCheckingEnabled( endpointChecking );
+        client.execPROT("P");
         return client;
     }
 }
