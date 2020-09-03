@@ -1,5 +1,7 @@
 package org.apache.maven.wagon.providers.ftp;
 
+import java.io.IOException;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -59,7 +61,11 @@ public class FtpsWagon
                 securityProtocol, implicit, endpointChecking );
         FTPSClient client = new FTPSClient( securityProtocol, implicit );
         client.setEndpointCheckingEnabled( endpointChecking );
-        client.execPROT("P");
+        try {
+			client.execPROT("P");
+		} catch (IOException e) {
+			LOG.info("Unable to change to protected data connection, continue with clear data connections.");
+		}
         return client;
     }
 }
