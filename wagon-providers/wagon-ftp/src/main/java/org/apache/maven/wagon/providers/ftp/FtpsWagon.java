@@ -46,7 +46,14 @@ public class FtpsWagon
      */
     private String securityProtocol = "TLS";
     
+    /**
+     * @plexus.configuration default-value="0"
+     */
     private int parmPBSZ = 0;
+    
+    /**
+     * @plexus.configuration default-value="P"
+     */
     private String dataConnMode = "P";
     
     /**
